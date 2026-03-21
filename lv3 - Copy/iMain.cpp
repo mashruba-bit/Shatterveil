@@ -5787,12 +5787,9 @@ void iKeyboard(unsigned char key) {
 				initCollectibles();  shuffleEnemySprites();
 			}
 		}
-
 	}
-
 	if (!playerAlive)
 		return;
-
 	// --------------------- MENU SHORTCUTS ---------------------
 	if (currentBg == 1 && key == ' ') {
 		currentBg = 2;
@@ -5800,19 +5797,98 @@ void iKeyboard(unsigned char key) {
 	}
 	// --------------------- STORY SEQUENCE ADVANCE ---------------------
 	if (currentBg == 3 && key == ' ') {
-		if (storyIndex < 6) {
+		if (storyIndex < 5) {
 			storyIndex++;
 		}
-		else {
-
-			// Last slide (instruction) done — actually start the game
+		else if (storyIndex == 5) {
+			// was story-6, go to level select
 			inStorySequence = false;
 			storyIndex = 0;
-			currentBg = 4;
-			gameStarted = true;
-			shuffleEnemySprites();
-			restartMusic(); // ← restart from beginning when game starts
+			currentBg = 13;
+			lvlHoverIndex = 0;
+		}
+		else if (storyIndex == 6) {
+			// was instruction.png, start Level 1
+			inStorySequence = false;
+			storyIndex = 0;
 
+			// ── Reset Level 1 ──────────────────────────────────────
+			playerWon = false;
+			playerAlive = true;
+			gameStarted = true;
+			gameOverTriggered = false;
+			gameOverScreen = false;
+			deathWaiting = false;
+			playerLives = MAX_LIVES;
+
+			playerX = PLAYER_START_X_BG41;
+			playerY = PLAYER_START_Y_BG41;
+			cameraX = 0;
+
+			isJumping = false;
+			jumpVelocity = 0;
+			punchState = 0;
+			punchJustLanded = false;
+			animFrame = 0;
+			movingFront = true;
+
+			chargingPunch = false;
+			chargedSequenceActive = false;
+			chargedUseCount = 0;
+			chargedPunchState = 0;
+			chargedTimeCounter = 0;
+			chargeScrollShown = false;
+			chargeScrollDismissed = false;
+			showChargeScroll = false;
+
+			showKneel = false;
+			kneelHolding = false;
+			kneelHoldCounter = 0;
+
+			killedByEnemy1 = false;
+			killedByEnemy2 = false;
+			killedByEnemy3 = false;
+			killedByEnemy4 = false;
+			killedByDragon = false;
+
+			enemy1Alive = true;
+			enemy1HitCount = 0;
+			enemy1Falling = false;
+			enemy1FloatOffset = 0.f;
+
+			enemy2Dead = false;
+			enemy2HitCount = 0;
+			enemy2Falling = false;
+			enemy2WasColliding = false;
+			enemy2BodyCollisionCount = 0;
+			enemy2X = 600;
+			enemy2Y = BG41_GROUND_Y + ENEMY2_FLOAT_HEIGHT;
+
+			enemy3Alive = true;
+			enemy3HitCount = 0;
+			enemy3Falling = false;
+			enemy3X = bridges[8].maxX + 50;
+			enemy3State = E3_WALKING;
+			enemy3PunchCount = 0;
+			enemy3AnimFrame = 0;
+			enemy3StateTimer = 0;
+
+			enemy4Alive = true;
+			enemy4HitCount = 0;
+			enemy4FloatOffset = 0.f;
+
+			dragonAlive = true;
+			dragonHitCount = 0;
+			dragonFrameIndex = 0;
+			dragonFireActive = false;
+
+			tokenCount = 0;
+			treasureCount = 0;
+			initCollectibles();
+
+			currentBg = 4;
+			shuffleEnemySprites();
+			restartMusic();
 		}
 		return;
 	}
@@ -6021,20 +6097,19 @@ void iMouse(int button, int state, int mx, int my) {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 		// Check if btn1 is clicked
 		// btn1 (index 0) → go to level select
-		int y = btnStartY - 0 * (btnH + btnGap);
+		/*int y = btnStartY - 0 * (btnH + btnGap);
 		if (mx >= btnX && mx <= btnX + btnW && my >= y && my <= y + btnH) {
-			lvlHoverIndex = 0;
-			currentBg = 13;
-		}
+		lvlHoverIndex = 0;
+		currentBg = 13;
+		}*/
 
 		// Level select clicks
 		if (currentBg == 13 && lvlHoverIndex > 0) {
-
-			// LEVEL 1 → story sequence
+			// LEVEL 1 → instruction screen directly (no story)
 			if (lvlHoverIndex == 1) {
-				inStorySequence = true;
-				storyIndex = 0;
 				currentBg = 3;
+				storyIndex = 6;     // instruction.png only
+				inStorySequence = false;
 				return;
 			}
 
@@ -6071,8 +6146,11 @@ void iMouse(int button, int state, int mx, int my) {
 			for (int i = 0; i < NUM_BUTTONS; i++) {
 				int y = btnStartY - i * (btnH + btnGap);
 				if (mx >= btnX && mx <= btnX + btnW && my >= y && my <= y + btnH) {
-					if (i == 0)
-						currentBg = 5;
+					if (i == 0) {
+						inStorySequence = true;
+						storyIndex = 0;
+						currentBg = 3;
+					}
 					else if (i == 1)
 						currentBg = 6;
 					else if (i == 2)
@@ -6092,6 +6170,7 @@ void iMouse(int button, int state, int mx, int my) {
 		}
 	}
 }
+
 
 void iMouseMove(int mx, int my) {}
 void iSpecialKeyboard(unsigned char key) {}
