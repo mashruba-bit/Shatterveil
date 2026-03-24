@@ -1,4 +1,4 @@
-#ifndef GLOBALS_H
+﻿#ifndef GLOBALS_H
 #define GLOBALS_H
 
 #include "constant.h"
@@ -16,10 +16,102 @@ struct Collectible {
   bool isTreasure;
 };
 
+struct SpikeObstacle {
+	float x;
+	float y;
+	bool playerTouching;
+	bool kneeling;
+	int  kneelTimer;
+};
+
+struct PowerUpToken {
+	float x, y;
+	bool collected;
+};
+
+struct TreeObstacle {
+	float x;
+	float y;
+	bool  playerTouching;
+};
+
+struct Lv3Coin {
+	float x, y;
+	bool  collected;
+	bool  showText;
+	int   textTimer;
+};
+
+// Hitbox definitions (screen coords) — tweak freely
+struct LvlHitbox { int x, y, w, h; };
+
 /* -------------------- ENUMS -------------------- */
 enum Enemy3State { E3_WALKING, E3_ATTACKING };
 
+enum Lv3BossState {
+	LV3BOSS_WALKING,   // idle walk loop on bridge 10
+	LV3BOSS_FIRE,      // fire attack (loops 3×)
+	LV3BOSS_JUMP,      // jump animation (once)
+	LV3BOSS_SLASH      // slash animation (once)
+};
+
+// ── State enum ───────────────────────────────────────────────
+enum Lv3En1State {
+	LV3EN1_IDLE,
+	LV3EN1_WALKING,
+	LV3EN1_ATTACKING,
+	LV3EN1_HIT_REACT
+};
+
+enum Lv3En2State {
+	LV3EN2_IDLE,
+	LV3EN2_RUNNING,
+	LV3EN2_ATTACKING,
+	LV3EN2_HIT_REACT
+};
+
+// ── State enum ───────────────────────────────────────────────
+enum Lv3En3State {
+	LV3EN3_IDLE_STATE,
+	LV3EN3_WALKING,
+	LV3EN3_ATTACKING,
+	LV3EN3_HIT_REACT
+};
+
+enum Lv3En4State {
+	LV3EN4_IDLE,
+	LV3EN4_RUNNING,
+	LV3EN4_ATTACKING,
+	LV3EN4_HIT_REACT
+};
+
+enum Lv3En5State {
+	LV3EN5_WAITING,
+	LV3EN5_APPEARING,
+	LV3EN5_IDLE,
+	LV3EN5_RUNNING,
+	LV3EN5_PUNCHING,
+	LV3EN5_HIT_REACT,
+	LV3EN5_REVIVING,
+	LV3EN5_DYING,
+	LV3EN5_TRULY_DEAD
+};
+
+enum Lv3En6State {
+	LV3EN6_WAITING,
+	LV3EN6_APPEARING,
+	LV3EN6_IDLE,
+	LV3EN6_RUNNING,
+	LV3EN6_PUNCHING,
+	LV3EN6_HIT_REACT,
+	LV3EN6_REVIVING,
+	LV3EN6_DYING,
+	LV3EN6_TRULY_DEAD
+};
+
+
 /* -------------------- GLOBAL VARIABLES -------------------- */
+//-----------------------------LEVEL 1--------------------------
 // Background images
 extern int bg1, bg2, bg41;
 extern int bg5, bg6, bg7;
@@ -200,5 +292,16 @@ extern Collectible collectibles[];
 extern int numCollectibles;
 
 extern bool swapEnemySprites;
+
+//------------LEVEL 3 GLOBALS---------------------
+extern int lastGameplayBg = 4;   // remembers which level was active before Game Over
+
+extern int kneelImg;
+extern bool showKneel;
+extern int kneelTimer;
+extern bool kneelHolding;
+extern int kneelHoldCounter;
+
+extern int instruction3Img;
 
 #endif
