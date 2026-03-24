@@ -248,12 +248,10 @@ bool  lv3WkPlayerTouching = false;
 bool  lv3WkKneeling = false;
 int   lv3WkKneelTimer = 0;
 
-
 int  lv3En3FadeTick = 0;          // counts up after death
 bool lv3En3FadeDone = false;      // true = stop drawing body
 int  lv3En4FadeTick = 0;
 bool lv3En4FadeDone = false;
-
 
 int lv3En5AprFrames[LV3EN5_APR_FRAMES];
 int lv3En5IdleFrames[LV3EN5_IDLE_FRAMES];
@@ -461,7 +459,6 @@ int shieldFrameIndex = 0;
 int winnerLv2Img;
 bool playerWonLv2 = false;
 
-
 //================= LEVEL 2 GLOBALS ====================================
 int lv2e2FramesRight[LV2E2FRAMECOUNT];
 int lv2e2FramesLeft[LV2E2FRAMECOUNT];
@@ -561,7 +558,7 @@ int chargeScrollImg;
 int playerX = PLAYER_START_X_BG41;
 int playerY = PLAYER_START_Y_BG41;
 
-bool movingFront = true;
+bool movingFront = false;
 int animFrame = 0;
 int punchState = 0;
 int chargedHitWindow = 0;
@@ -833,6 +830,9 @@ void updateLv3PBird();
 void updateLv3PBird2();
 void updateLv3Barrel();
 void updateLv3Barrel2();
+void resetLevel1State();
+void resetLevel2State();
+void resetLevel3State();
 
 void updateDragonHit() {
 	if (currentBg != 4)
@@ -4654,6 +4654,7 @@ void iKeyboard(unsigned char key) {
 		killedByFire = false;
 		pendingLivesLoss = 1;
 		// Reset Player
+		movingFront = false;
 		playerAlive = true;      // make sure player is alive
 		playerLives = MAX_LIVES; // reset lives for level 2
 		deathWaiting = false;
@@ -4848,10 +4849,11 @@ void iKeyboard(unsigned char key) {
 		energy2FrameIndex = 0;
 		energy2AnimTick = 0;
 		barrel2WasPunching = false;
+		movingFront = false;
 		return;
 	}
 	// --------------------- GAME OVER SCREEN CONTROLS ---------------------
-	// right before: currentBg = 8;
+	
 	static int currentBgBeforeDeath = 4;  // declare globally near top
 
 	if (gameOverTriggered && !gameOverScreen) {
@@ -4871,64 +4873,28 @@ void iKeyboard(unsigned char key) {
 			gameStarted = false;
 			gameOverScreen = false;
 			gameOverTriggered = false;
+			deathWaiting = false;
+			deathDelayCounter = 0;
+			playerAlive = true;
 			return;
 		}
 
-		if (key == 'y' || key == 'Y')
-		{
+		if (key == 'y' || key == 'Y') {
 			gameOverScreen = false;
 			gameOverTriggered = false;
 			deathWaiting = false;
 			playerAlive = true;
 			gameStarted = true;
-			playerLives = MAX_LIVES;
-			showKneel = false;
-			kneelHolding = false;
-			kneelHoldCounter = 0;
-			chargingPunch = false;
-			chargedSequenceActive = false;
-			chargedUseCount = chargedUseCountLv3 = 0;
-			chargedTimeCounter = 0;
-			punchState = 0;
-			punchJustLanded = false;
 
-			// restart based on last gameplay background
-			if (lastGameplayBg == 10) {     // Level 2 death
-				currentBg = 10;
-				// minimal Level‑2 reset
-				lv2CameraX = 0;  lv2CharX = 100;  lv2CharY = bridges2[0].snapY;
-				lv2IsJumping = false;  lv2JumpVelocity = 0;
-				boss1Dead = false;  boss1Active = true;  boss1Moving = true;
-				boss1X = (float)(bridges2[6].maxX - (PLAYER_WIDTH + 70) - 50);
-				tokenCountLv2 = 0;  initCollectiblesLv2();  initFires();
-			}
-			else if (lastGameplayBg == 12) { // Level 3 death
-				currentBg = 12;
-				lv3CameraX = 0;  lv3CharX = 100;  lv3CharY = bridges3[0].snapY;
-				lv3IsJumping = false;  lv3JumpVelocity = 0;
-				// reset key Level 3 entities
-				lv3BossDead = false;  lv3BossActive = false;  lv3BossHitCount = 0;
-				lv3BossPlayerHitCount = 0;  lv3BossX = (float)(bridges3[10].maxX - LV3BOSS_W - 60);
-				lv3Crouching = false;  lv3ShieldActive = false;
-				chargedUseCountLv3 = 0;
-				for (int i = 0; i < NUM_PUPTK_LV3; i++) puptkLv3[i].collected = false;
-				for (int i = 0; i < NUM_COINS_LV3; i++) {
-					coinsLv3[i].collected = false;
-					coinsLv3[i].showText = false;
-					coinsLv3[i].textTimer = 0;
-				}
-				lv3CoinCount = 0;
-				coinAnimIndex = 0;
-			}
-			else {                       // default → Level 1
-				currentBg = 4;
-				cameraX = 0;  playerX = PLAYER_START_X_BG41;  playerY = PLAYER_START_Y_BG41;
-				enemy1Alive = true;  enemy2Dead = false;  enemy3Alive = true;  enemy4Alive = true;
-				dragonAlive = true;  tokenCount = 0; treasureCount = 0;
-				initCollectibles();  shuffleEnemySprites();
-			}
+			if (lastGameplayBg == 4)
+				resetLevel1State();
+			else if (lastGameplayBg == 10)
+				resetLevel2State();
+			else if (lastGameplayBg == 12)
+				resetLevel3State();
+			else
+				resetLevel1State();  // default fallback
 		}
-
 	}
 
 	if (!playerAlive)
@@ -4974,7 +4940,7 @@ void iKeyboard(unsigned char key) {
 			punchState = 0;
 			punchJustLanded = false;
 			animFrame = 0;
-			movingFront = true;
+			movingFront = false;
 
 			chargingPunch = false;
 			chargedSequenceActive = false;
@@ -8307,6 +8273,7 @@ void respawnPlayer() {
 		boss1Dead = false;
 		boss1Active = true;
 		deathWaiting = false;
+		movingFront = false;
 	}
 }
 
@@ -8361,6 +8328,286 @@ void lv2HitPlayer(int livesLost, bool byFire, float fireWorldX) {
 		handlePlayerDeath();
 	}
 }
+
+void resetLevel1State() {
+	currentBg = 4;
+	cameraX = 0;
+	playerX = PLAYER_START_X_BG41;
+	playerY = PLAYER_START_Y_BG41;
+	isJumping = false;
+	jumpVelocity = 0;
+	punchState = 0;
+	punchJustLanded = false;
+	movingFront = false;
+	animFrame = 0;
+
+	playerAlive = true;
+	playerLives = MAX_LIVES;
+	playerWon = false;
+	gameStarted = true;
+	gameOverTriggered = false;
+	gameOverScreen = false;
+	deathWaiting = false;
+
+	enemy1Alive = true; enemy1HitCount = 0;
+	enemy2Dead = false; enemy2HitCount = 0; enemy2Falling = false;
+	enemy3Alive = true; enemy3HitCount = 0; enemy3Falling = false;
+	enemy4Alive = true; enemy4HitCount = 0; dragonAlive = true;
+	dragonHitCount = 0;
+
+	tokenCount = 0; treasureCount = 0;
+	initCollectibles();
+	shuffleEnemySprites();
+	restartMusic();
+}
+
+void resetLevel2State() {
+	currentBg = 10;
+	lv2CameraX = 0;
+	lv2CharX = 100;
+	lv2CharY = bridges2[0].snapY;
+	lv2IsJumping = false;
+	lv2JumpVelocity = 0;
+
+	playerAlive = true;
+	playerLives = MAX_LIVES;
+	playerWonLv2 = false;
+	gameStarted = true;
+	gameOverTriggered = false;
+	gameOverScreen = false;
+	deathWaiting = false;
+
+	// reset boss1
+	boss1Dead = false;
+	boss1Active = true;
+	boss1Moving = true;
+	boss1HitCount = 0;
+	boss1ChargedHits = 0;
+	boss1X = (float)(bridges2[6].maxX - (PLAYER_WIDTH + 70) - 50);
+
+	// enemies
+	lv2e1Alive = true; lv2e1HitCount = 0; lv2e1Active = false;
+	lv2e2Alive = true; lv2e2HitCount = 0; lv2e2MovingRight = true;
+	lv2wkAlive = true; lv2wk2Alive = true; lv2wk3Alive = true;
+
+	killedByFire = killedByLv2e1 = killedByLv2e2 = false;
+	killedByLv2wk = killedByLv2wk2 = killedByLv2wk3 = false;
+
+	initCollectiblesLv2();
+	initFires();
+}
+
+void resetLevel3State() {
+	currentBg = 12;
+	lv3CameraX = 0;
+	lv3CharX = 100;
+	lv3CharY = bridges3[0].snapY;
+	lv3IsJumping = false;
+	lv3JumpVelocity = 0;
+
+	playerAlive = true;
+	playerLives = 12;
+	playerWonLv3 = false;
+	gameStarted = true;
+	movingFront = false;
+	showKneel = false;
+	kneelHolding = false;
+	kneelHoldCounter = 0;
+	chargedUseCountLv3 = 0;
+	chargingPunch = false;
+	chargedSequenceActive = false;
+	chargedPunchState = 0;
+	chargedTimeCounter = 0;
+	punchState = 0;
+	punchJustLanded = false;
+	lv3Crouching = false;
+	lv3ShieldActive = false;
+
+	// ─── Boss defaults (right end of Bridge 10) ───────────────
+	lv3BossDead = false;
+	lv3BossActive = false;
+	lv3BossState = LV3BOSS_WALKING;
+	lv3BossFrameIndex = 0;
+	lv3BossFireLoopCount = 0;
+	lv3BossDeadImg = lv3BossDeadImg; // preserve image id
+	lv3BossHitCount = 0;
+	lv3BossPlayerHitCount = 0;
+	lv3BossSlashCycleCount = 0;
+	lv3BossHitCooldown = 0;
+	lv3BossX = (float)(bridges3[9].maxX - LV3BOSS_W - 10);
+
+	// ─── Birds ─────────────────────────────────────────
+	lv3BirdAlive = true;
+	lv3BirdActive = false;
+	lv3BirdHitCount = 0;
+	lv3BirdFalling = false;
+	lv3BirdFrameIndex = 0;
+	lv3BirdWasColliding = false;
+	lv3BirdX = (float)((bridges3[1].minX + bridges3[1].maxX) / 2);
+
+	lv3Bird2Alive = true;
+	lv3Bird2Active = false;
+	lv3Bird2HitCount = 0;
+	lv3Bird2Falling = false;
+	lv3Bird2FrameIndex = 0;
+	lv3Bird2WasColliding = false;
+	lv3Bird2SpawnTimer = 0;
+	lv3Bird2X = (float)((bridges3[1].minX + bridges3[1].maxX) / 2);
+
+	// ─── PBirds (start active same as first load) ─────────────
+	lv3PBirdAlive = true;
+	lv3PBirdActive = true;
+	lv3PBirdFrameIndex = 0;
+	lv3PBirdMovingRight = true;
+	lv3PBirdWasColliding = false;
+	lv3PBirdX = (float)bridges3[2].minX;
+
+	lv3PBird2Alive = true;
+	lv3PBird2Active = true;
+	lv3PBird2FrameIndex = 0;
+	lv3PBird2MovingRight = true;
+	lv3PBird2WasColliding = false;
+	lv3PBird2X = (float)bridges3[6].minX;
+
+	// ─── Enemies & WK pair ──────────────────────────────
+	lv3En1Alive = true; lv3En1Active = false;
+	lv3En1State = LV3EN1_IDLE;
+	lv3En1NormalHits = lv3En1ChargedHits = 0;
+	lv3En1Dead = lv3En1Falling = false;
+	lv3En1X = (float)(bridges3[1].maxX - LV3EN1_W);
+	lv3En1FrameIndex = lv3En1AnimTick = 0;
+
+	lv3En2Alive = true; lv3En2Active = false;
+	lv3En2State = LV3EN2_IDLE;
+	lv3En2NormalHits = lv3En2ChargedHits = 0;
+	lv3En2Dead = lv3En2Falling = false;
+	lv3En2X = (float)(bridges3[1].minX);
+	lv3En2FrameIndex = lv3En2AnimTick = 0;
+
+	lv3En3Alive = true; lv3En3Active = false;
+	lv3En3State = LV3EN3_IDLE_STATE;
+	lv3En3NormalHits = lv3En3ChargedHits = 0;
+	lv3En3Falling = false;
+	lv3En3FadeTick = 0; lv3En3FadeDone = false;
+	lv3En3X = (float)(bridges3[5].maxX - LV3EN3_IDLE_W);
+
+	lv3En4Alive = true; lv3En4Active = false;
+	lv3En4State = LV3EN4_IDLE;
+	lv3En4NormalHits = lv3En4ChargedHits = 0;
+	lv3En4Dead = lv3En4Falling = false;
+	lv3En4FadeTick = 0; lv3En4FadeDone = false;
+	lv3En4X = (float)(bridges3[5].minX);
+
+	lv3WkAlive = true;
+	lv3WkFrameIndex = 0;
+	lv3WkX = (float)(bridges3[5].minX + LV3WK0_X_OFF);
+	lv3WkY = (float)(bridges3[5].snapY + LV3WK_Y_OFF);
+	lv3WkKneeling = false;
+	lv3WkPlayerTouching = false;
+
+	lv3En5State = LV3EN5_WAITING;
+	lv3En6State = LV3EN6_WAITING;
+	lv3En5FrameIndex = lv3En6FrameIndex = 0;
+	lv3En5NormalHits = lv3En6NormalHits = 0;
+	lv3En5ChargedHits = lv3En6ChargedHits = 0;
+	lv3En5ReviveCount = lv3En6ReviveCount = 0;
+	lv3En5En4HitTriggered = lv3En6En4HitTriggered = false;
+	lv3En5X = (float)(bridges3[5].maxX + LV3EN5_LAND_X_OFF);
+	lv3En6X = (float)(bridges3[5].maxX + LV3EN6_LAND_X_OFF);
+	lv3En5Y = lv3En6Y = 800;
+
+	// ─── Spikes, trees, barrels ─────────────────────────
+	for (int i = 0; i < NUM_SPIKES_LV3; i++){
+		spikesLv3[i].playerTouching = false;
+		spikesLv3[i].kneeling = false;
+		spikesLv3[i].kneelTimer = 0;
+	}
+	spikeAnimIndex = 0;
+
+	for (int i = 0; i < NUM_TREES_LV3; i++)
+		treesLv3[i].playerTouching = false;
+	treeAnimIndex = 0;
+
+	barrelState = 0;
+	barrelWasPunching = false;
+	barrel2State = 0;
+	barrel2WasPunching = false;
+	energyFrameIndex = 0;
+	energy2FrameIndex = 0;
+	energyAnimTick = 0;
+	energy2AnimTick = 0;
+
+	// ─── Power‑Up Tokens (recalculate positions) ─────────
+	float spike0x = (float)(bridges3[3].minX + SPIKE0_X_OFF);
+	float spike1x = (float)(bridges3[3].maxX - SPIKE_W + SPIKE1_X_OFF);
+	float spike2x = (float)(bridges3[7].minX + SPIKE2_X_OFF - 10);
+	float spike3x = (float)(bridges3[7].maxX - SPIKE_W + SPIKE3_X_OFF);
+
+	puptkLv3[0] = {
+		(spike0x + spike1x + SPIKE_W) / 2.0f - PUPTK_W / 2.0f,
+		(float)(bridges3[3].snapY + PUPTK_Y_OFF),
+		false
+	};
+	puptkLv3[1] = {
+		(spike2x + spike3x + SPIKE_W) / 2.0f - PUPTK_W / 2.0f,
+		(float)(bridges3[7].snapY + PUPTK_Y_OFF),
+		false
+	};
+	puptkShowText[0] = puptkShowText[1] = false;
+	puptkTextTimer[0] = puptkTextTimer[1] = 0;
+	puptkAnimIndex = 0;
+
+	// ─── Coins full rebuild from initBackground pattern ────
+	// (same helper used originally)
+	float gapY;
+	auto placeCoinRow = [&](int gmin, int gmax, float gy, int startIdx){
+		float gc = (gmin + gmax) / 2.0f;
+		float totW = 4.0f * COIN_SPACING;
+		float sx = gc - totW / 2.0f;
+		for (int c = 0; c<5; c++){
+			coinsLv3[startIdx + c] = { sx + c*COIN_SPACING, gy + COIN_Y_OFF, false, false, 0 };
+		}
+	};
+	placeCoinRow(bridges3[0].maxX - 30, bridges3[1].minX - 20,
+		(bridges3[0].snapY + bridges3[1].snapY) / 2.0f, 0);
+	placeCoinRow(bridges3[1].maxX - 30, bridges3[2].minX - 20,
+		(bridges3[1].snapY + bridges3[2].snapY) / 2.0f, 5);
+	placeCoinRow(bridges3[4].maxX - 30, bridges3[5].minX - 20,
+		(bridges3[4].snapY + bridges3[5].snapY) / 2.0f, 10);
+	placeCoinRow(bridges3[5].maxX - 30, bridges3[6].minX - 20,
+		(bridges3[5].snapY + bridges3[6].snapY) / 2.0f, 15);
+	placeCoinRow(bridges3[8].maxX - 30, bridges3[9].minX - 20,
+		(bridges3[8].snapY + bridges3[9].snapY) / 2.0f, 20);
+	placeCoinRow(bridges3[9].maxX - 30, bridges3[10].minX - 20,
+		(bridges3[9].snapY + bridges3[10].snapY) / 2.0f, 25);
+
+	for (int c = 0; c<4; c++){
+		coinsLv3[30 + c] = {
+			(float)(bridges3[4].maxX + B5_COIN_START_X_OFF) + c*B5_COIN_GAP,
+			(float)(bridges3[4].snapY + B5_COIN_Y_OFF),
+			false, false, 0
+		};
+		coinsLv3[34 + c] = {
+			(float)(bridges3[8].maxX + B9_COIN_START_X_OFF) + c*B9_COIN_GAP,
+			(float)(bridges3[8].snapY + B9_COIN_Y_OFF),
+			false, false, 0
+		};
+	}
+	for (int c = 0; c<7; c++){
+		coinsLv3[38 + c] = {
+			(float)(bridges3[9].minX + B10_COIN_X_OFF) + c*B10_COIN_GAP,
+			(float)(bridges3[9].snapY + B10_COIN_Y_OFF),
+			false, false, 0
+		};
+	}
+	lv3CoinCount = 0;
+	coinAnimIndex = 0;
+
+	restartMusic();
+}
+
+
+
 
 void handlePlayerDeath() {
 	if (!playerAlive && !deathWaiting && !gameOverTriggered) {
