@@ -1,11 +1,5 @@
-//
-//  Original Author: S. M. Shahriar Nirjon
-//
-//  Last Modified by: Mr. Mohammad Imrul Jubair [Assistant Professor (AUST CSE)]
-//  Last Updated: 16 December 2017 
-//
-//  Version: 4.0
-//
+#ifndef IGRAPHICS_H
+#define IGRAPHICS_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -532,3 +526,5 @@ void iStart()
 
     glutMainLoop();
 }
+
+#endif

@@ -1,4 +1,4 @@
-﻿#include "constant.h"
+#include "constant.h"
 #include "globals.h"
 #include "iGraphics.h"
 #include <cmath>
@@ -408,9 +408,6 @@ int btnGap = 25;
 int signpostImg;
 int winFlagImg;
 int winnerImg;
-int hudLifeImg, hudPunchImg;
-int tokenImg, treasureImg, tokenImgLv2, tokenCount = 0, treasureCount = 0,
-tokenCountLv2 = 0;
 bool playerWon = false;
 // Story sequence - ADD THESE THREE LINES
 int storyImgs[7];
@@ -540,10 +537,6 @@ int pendingLivesLoss = 1;    // lives to deduct on next death tick
 int lv2e1DeadImg;
 int lv2e2DeadImg;
 
-Collectible collectibles[15];
-int numCollectibles = 15;
-Collectible collectiblesLv2[6];
-int numCollectiblesLv2 = 6;
 bool swapEnemySprites = false;
 
 int playerSide, playerSideLeft;
@@ -589,6 +582,9 @@ bool killedByDragon = false;
 bool killedByEnemy3 = false;
 bool killedByEnemy4 = false;
 bool killedByEnemy2 = false;
+
+#include "tokensP1.h"
+#include "HUD.h"
 
 int playerLives = MAX_LIVES;
 bool gameOverTriggered = false;
@@ -667,133 +663,6 @@ bool dragonFireHitChecked = false;
 bool dragonAlive = true;
 int dragonHitCount = 0;
 bool dragonFireActive = false;
-
-void initCollectibles() {
-	int tSize = 35;
-	int trW = 80, trH = 80;
-	int index = 0;
-
-	// Bridge 1 (index 0) - More towards the left
-	int leftX0 = bridges[0].minX + 60;
-	collectibles[index++] = { leftX0, bridges[0].snapY + 45, false, false };
-	collectibles[index++] = { leftX0 - tSize / 2 - 10, bridges[0].snapY + 10,
-		false, false };
-	collectibles[index++] = { leftX0 + tSize / 2 + 10, bridges[0].snapY + 10,
-		false, false };
-
-	// Bridge 2 (index 1)
-	int midX1 = (bridges[1].minX + bridges[1].maxX) / 2;
-	collectibles[index++] = { midX1 - tSize / 2, bridges[1].snapY + 45, false,
-		false };
-	collectibles[index++] = { midX1 - tSize - 10, bridges[1].snapY + 10, false,
-		false };
-	collectibles[index++] = { midX1 + 10, bridges[1].snapY + 10, false, false };
-
-	// Bridge 4 (index 3)
-	int midX3 = (bridges[3].minX + bridges[3].maxX) / 2;
-	collectibles[index++] = { midX3 - tSize - 5, bridges[3].snapY + 10, false,
-		false };
-	collectibles[index++] = { midX3 + 5, bridges[3].snapY + 10, false, false };
-
-	// Bridge 7 (index 6)
-	int midX6 = (bridges[6].minX + bridges[6].maxX) / 2;
-	collectibles[index++] = { midX6 - tSize - 5, bridges[6].snapY + 10, false,
-		false };
-	collectibles[index++] = { midX6 + 5, bridges[6].snapY + 10, false, false };
-
-	// Bridge 9 (index 8)
-	int midX8 = (bridges[8].minX + bridges[8].maxX) / 2;
-	collectibles[index++] = { midX8 - tSize / 2, bridges[8].snapY + 45, false,
-		false };
-	collectibles[index++] = { midX8 - tSize - 10, bridges[8].snapY + 10, false,
-		false };
-	collectibles[index++] = { midX8 + 10, bridges[8].snapY + 10, false, false };
-
-	// Bridge 5 (index 4)
-	int midX4 = (bridges[4].minX + bridges[4].maxX) / 2;
-	collectibles[index++] = { midX4 - trH / 2, bridges[4].snapY, false, true };
-
-	// Bridge 8 (index 7)
-	int midX7 = (bridges[7].minX + bridges[7].maxX) / 2;
-	collectibles[index++] = { midX7 - trH / 2, bridges[7].snapY, false, true };
-}
-
-void checkCollectibleCollisions() {
-	if (currentBg != 4 || !playerAlive)
-		return;
-
-	int tSize = 35;
-	int trW = 80, trH = 80;
-
-	for (int i = 0; i < numCollectibles; i++) {
-		if (collectibles[i].collected)
-			continue;
-
-		int cW = collectibles[i].isTreasure ? trW : tSize;
-		int cH = collectibles[i].isTreasure ? trH : tSize;
-
-		if (playerX < collectibles[i].x + cW &&
-			playerX + PLAYER_WIDTH > collectibles[i].x &&
-			playerY < collectibles[i].y + cH &&
-			playerY + PLAYER_HEIGHT > collectibles[i].y) {
-			collectibles[i].collected = true;
-			if (collectibles[i].isTreasure) {
-				treasureCount++;
-			}
-			else {
-				tokenCount++;
-			}
-		}
-	}
-}
-
-void initCollectiblesLv2() {
-	int tSize = 35; // Reduced size as requested
-	int index = 0;
-
-	// Bridge 2 (index 1) - Triangle pattern
-	int midX2 = (bridges2[1].minX + bridges2[1].maxX) / 2;
-	int baseLineY2 = bridges2[1].snapY + 15;
-	collectiblesLv2[index++] = { midX2 - tSize / 2, baseLineY2 + 50, false,
-		false }; // Top
-	collectiblesLv2[index++] = { midX2 - tSize - 10, baseLineY2, false,
-		false }; // Bottom Left
-	collectiblesLv2[index++] = { midX2 + 10, baseLineY2, false,
-		false }; // Bottom Right
-
-	// Bridge 6 (index 5) - Triangle pattern
-	int midX6 = (bridges2[5].minX + bridges2[5].maxX) / 2;
-	int baseLineY6 = bridges2[5].snapY + 15;
-	collectiblesLv2[index++] = { midX6 - tSize / 2, baseLineY6 + 50, false,
-		false }; // Top
-	collectiblesLv2[index++] = { midX6 - tSize - 10, baseLineY6, false,
-		false }; // Bottom Left
-	collectiblesLv2[index++] = { midX6 + 10, baseLineY6, false,
-		false }; // Bottom Right
-}
-
-void checkCollectibleCollisionsLv2() {
-	if (currentBg != 10 || !playerAlive)
-		return;
-
-	int tSize = 35; // Visual size for draw
-	int cSize = 20; // Collision size (tighter box)
-
-	for (int i = 0; i < numCollectiblesLv2; i++) {
-		if (collectiblesLv2[i].collected)
-			continue;
-
-		// Using a tighter hitbox (playerX, playerY are already big, so shrinking
-		// token box helps)
-		if (lv2CharX < collectiblesLv2[i].x + cSize &&
-			lv2CharX + PLAYER_WIDTH > collectiblesLv2[i].x &&
-			lv2CharY < collectiblesLv2[i].y + cSize &&
-			lv2CharY + PLAYER_HEIGHT > collectiblesLv2[i].y) {
-			collectiblesLv2[i].collected = true;
-			tokenCountLv2++;
-		}
-	}
-}
 
 // ---------------- FORWARD DECLARATIONS ----------------
 
@@ -1938,155 +1807,6 @@ void playPunchSound() {
 
 	mciSendString("play punch", NULL, 0,
 		NULL); // no "repeat" - punch sound plays once
-}
-
-void drawHUD() {
-	if ((currentBg != 4 && currentBg != 10) || playerWon || playerWonLv2)
-		return;
-
-	int hudW = 300; // Longer
-	int hudH = 25;  // Thicker
-	int margin = 20;
-	int gap = 20;      // Increased gap for larger icons
-	int iconSize = 45; // Bigger icons
-	int startX = SCREEN_WIDTH - hudW - margin;
-	int startY = SCREEN_HEIGHT - margin - hudH;
-
-	// Icons (Heart/Life)
-	int lifeIconX =
-		(currentBg == 10) ? (startX - iconSize + 10) : (startX - iconSize - 2);
-	iShowImage(lifeIconX, startY - (iconSize - hudH) / 2, iconSize, iconSize,
-		hudLifeImg);
-
-	// Background for Life Bar
-	iSetColor(40, 40, 40);
-	iFilledRectangle(startX, startY, hudW, hudH);
-
-	// Life Bar (Deep Red)
-	float lifeRatio = (float)playerLives / MAX_LIVES;
-	if (lifeRatio > 1.0f)
-		lifeRatio = 1.0f;
-	if (lifeRatio > 0) {
-		iSetColor(180, 0, 0); // Deep Red
-		iFilledRectangle(startX, startY, (int)(hudW * lifeRatio), hudH);
-	}
-
-	// Border for Life bar (Black)
-	iSetColor(0, 0, 0);
-	iRectangle(startX, startY, hudW, hudH);
-
-	// Background for Charged Punch Bar
-	int punchY = startY - hudH - gap;
-
-	// Icons (Punch)
-	int punchIconX =
-		(currentBg == 10) ? (startX - iconSize + 10) : (startX - iconSize - 2);
-	iShowImage(punchIconX, punchY - (iconSize - hudH) / 2, iconSize, iconSize,
-		hudPunchImg);
-
-	iSetColor(40, 40, 40);
-	iFilledRectangle(startX, punchY, hudW, hudH);
-
-	// Charged Punch Bar (Deeper Blue)
-	int remainingPunches = MAX_CHARGED_USES - chargedUseCount;
-	if (remainingPunches < 0)
-		remainingPunches = 0;
-	float punchRatio = (float)remainingPunches / MAX_CHARGED_USES;
-	if (punchRatio > 0) {
-		iSetColor(0, 0, 120); // Deeper Blue
-		iFilledRectangle(startX, punchY, (int)(hudW * punchRatio), hudH);
-	}
-
-	// Border for Punch bar (Black)
-	iSetColor(0, 0, 0);
-	iRectangle(startX, punchY, hudW, hudH);
-
-	// ---------------- TOKEN BAR (LEVEL 1: TOP-LEFT, LEVEL 2: TOP-RIGHT BELOW
-	// PUNCH) ----------------
-	int tokenStartX = (currentBg == 10) ? startX : margin;
-	int tokenStartY = (currentBg == 10) ? (punchY - hudH - gap)
-		: (SCREEN_HEIGHT - margin - hudH);
-	int tokenIconSize = 45;
-
-	int currentTokenCount = (currentBg == 10) ? tokenCountLv2 : tokenCount;
-	int currentMaxTokens = (currentBg == 10) ? 6 : MAX_TOKENS;
-	int currentTokenImg = (currentBg == 10) ? tokenImgLv2 : tokenImg;
-
-	// Background for Token Bar
-	iSetColor(40, 40, 40);
-	iFilledRectangle(tokenStartX, tokenStartY, hudW, hudH);
-
-	float tokenRatio = (float)currentTokenCount / currentMaxTokens;
-	if (tokenRatio > 1.0f)
-		tokenRatio = 1.0f;
-	if (tokenRatio > 0) {
-		if (currentBg == 10)
-			iSetColor(150, 0, 255); // Purple for Level 2 tokens
-		else
-			iSetColor(0, 0, 0); // Black Bar for Level 1
-		iFilledRectangle(tokenStartX, tokenStartY, (int)(hudW * tokenRatio), hudH);
-	}
-
-	// Token Count Text (Centered in bar)
-	char tokenStr[20];
-	sprintf_s(tokenStr, "%d/%d", currentTokenCount, currentMaxTokens);
-	iSetColor(255, 255, 255);
-	int textX = tokenStartX + (hudW - (int)strlen(tokenStr) * 10) / 2;
-	int textY = tokenStartY + (hudH - 18) / 2;
-	iText(textX, textY, tokenStr, GLUT_BITMAP_HELVETICA_18);
-
-	// Border for Token bar (Black)
-	iSetColor(0, 0, 0);
-	iRectangle(tokenStartX, tokenStartY, hudW, hudH);
-
-	// Icons (Token) - Slightly overlap in Level 2
-	int tokenIconX;
-	if (currentBg == 10) {
-		tokenIconX = tokenStartX - tokenIconSize + 10; // Overlap on the left
-	}
-	else {
-		tokenIconX = tokenStartX + hudW + 7; // Level 1 is on the right
-	}
-	iShowImage(tokenIconX, tokenStartY - (tokenIconSize - hudH) / 2,
-		tokenIconSize, tokenIconSize, currentTokenImg);
-
-	// ---------------- TREASURE BAR (BELOW TOKEN BAR - ONLY LEVEL 1)
-	// ----------------
-	if (currentBg == 4) {
-		int treasureStartY = tokenStartY - hudH - gap;
-
-		// Background for Treasure Bar
-		iSetColor(40, 40, 40);
-		iFilledRectangle(tokenStartX, treasureStartY, hudW, hudH);
-
-		// Treasure Bar Fill (Deep Purple/Electric Purple)
-		float treasureRatio = (float)treasureCount / MAX_TREASURES;
-		if (treasureRatio > 1.0f)
-			treasureRatio = 1.0f;
-		if (treasureRatio > 0) {
-			iSetColor(120, 0, 120); // Electric Purple
-			iFilledRectangle(tokenStartX, treasureStartY, (int)(hudW * treasureRatio),
-				hudH);
-		}
-
-		// Treasure Count Text (Centered in bar)
-		char treasureStr[20];
-		sprintf_s(treasureStr, "%d/%d", treasureCount, MAX_TREASURES);
-		iSetColor(255, 255, 255);
-		int tTextX = tokenStartX + (hudW - (int)strlen(treasureStr) * 10) / 2;
-		int tTextY = treasureStartY + (hudH - 18) / 2;
-		iText(tTextX, tTextY, treasureStr, GLUT_BITMAP_HELVETICA_18);
-
-		// Border for Treasure bar (Black)
-		iSetColor(0, 0, 0);
-		iRectangle(tokenStartX, treasureStartY, hudW, hudH);
-
-		// Icons (Treasure) - Mirroring Token Bar style
-		int treasureIconSize = 65;
-		iShowImage(tokenStartX + hudW + 2,
-			treasureStartY - (treasureIconSize - hudH) / 2, treasureIconSize,
-			treasureIconSize, treasureImg);
-	}
 }
 
 // In checkBoss1PlayerCollision(), fix positions to match draw:
@@ -4544,6 +4264,7 @@ void iDraw() {
 		iShowImage(scrollX, scrollY, WINNER_WIDTH, WINNER_HEIGHT, winnerLv2Img);
 	}
 	drawHUD();
+	drawHUDLv3();
 }
 
 void iKeyboard(unsigned char key) {
@@ -4890,8 +4611,14 @@ void iKeyboard(unsigned char key) {
 				resetLevel1State();
 			else if (lastGameplayBg == 10)
 				resetLevel2State();
-			else if (lastGameplayBg == 12)
+			else if (lastGameplayBg == 12) {
 				resetLevel3State();
+				// Hard override to ensure punch stats strictly dump to zero
+				chargedUseCountLv3 = 0;
+				for (int i = 0; i < NUM_PUPTK_LV3; i++) {
+					puptkLv3[i].collected = false;
+				}
+			}
 			else
 				resetLevel1State();  // default fallback
 		}
@@ -5065,7 +4792,14 @@ void iKeyboard(unsigned char key) {
 
 		int &activeChargedCount = (currentBg == 12) ? chargedUseCountLv3 : chargedUseCount;
 
-		if ((key == 'p' || key == 'P') && activeChargedCount < MAX_CHARGED_USES + NUM_PUPTK_LV3) {
+		bool canUsePunch = false;
+		if (currentBg == 12) {
+			if ((4 - chargedUseCountLv3) > 0) canUsePunch = true;
+		} else {
+			if (activeChargedCount < MAX_CHARGED_USES + NUM_PUPTK_LV3) canUsePunch = true;
+		}
+
+		if ((key == 'p' || key == 'P') && canUsePunch) {
 			if (!chargeScrollShown) {
 				showChargeScroll = true;
 				chargeScrollShown = true;
@@ -5383,8 +5117,8 @@ void updateLv3PlayerHitbox() {
 
 		lv3PHB.x1 = sprX + (int)(CROUCH_W * LV3_HB_CROUCH_LEFT);
 		lv3PHB.x2 = sprX + (int)(CROUCH_W * LV3_HB_CROUCH_RIGHT);
-		lv3PHB.y1 = sprY + (int)(CROUCH_H * LV3_HB_CROUCH_TOP);
-		lv3PHB.y2 = sprY + (int)(CROUCH_H * LV3_HB_CROUCH_BOTTOM);
+		lv3PHB.y1 = sprY + (int)(CROUCH_H * LV3_HB_CROUCH_BOTTOM);
+		lv3PHB.y2 = sprY + (int)(CROUCH_H * LV3_HB_CROUCH_TOP);
 	}
 	else if (punchState == 2) {
 		// ── Active punch hit / kick — fist.png IS punchf pose with extended reach ──
@@ -7407,29 +7141,27 @@ void updateLv3Barrel() {
 			energyFrameIndex = (energyFrameIndex + 1) % ENERGY_FRAMECOUNT;
 		}
 
-		// ── Crouch hitbox overlaps energy → restore full lives ──
-		if (lv3Crouching && playerAlive) {
+		// ── Player overlaps energy → restore full lives ──
+		if (playerAlive) {
 			float energyWX = (float)(bridges3[4].maxX + ENERGY_X_OFF);
 			float energyWY = (float)(bridges3[4].snapY + ENERGY_Y_OFF);
 
 			// Energy hitbox (world coords)
 			int eX1 = (int)energyWX + (int)(ENERGY_W * ENERGY_HB_LEFT);
 			int eX2 = (int)energyWX + (int)(ENERGY_W * ENERGY_HB_RIGHT);
-			int eY1 = (int)energyWY;
-			int eY2 = (int)energyWY + ENERGY_H;
+			int eY1 = (int)energyWY + (int)(ENERGY_H * 0.1f);
+			int eY2 = (int)energyWY + (int)(ENERGY_H * 0.9f);
 
-			// Player hitbox — raw crouch sprite box, direction-independent
-			int sprX = lv3CharX - (CROUCH_W - PLAYER_WIDTH) / 2;
-			int sprY = lv3CharY + CROUCH_Y_OFF;
-			int pX1 = sprX;
-			int pX2 = sprX + CROUCH_W;
-			int pY1 = sprY;
-			int pY2 = sprY + CROUCH_H;
+			// Player hitbox (using standard level 3 hitbox)
+			int pX1 = lv3PHB.x1;
+			int pX2 = lv3PHB.x2;
+			int pY1 = lv3PHB.y1;
+			int pY2 = lv3PHB.y2;
 
 			bool oX = !(pX2 < eX1 || pX1 > eX2);
 			bool oY = !(pY2 < eY1 || pY1 > eY2);
 
-			if (oX && oY) {
+			if (oX && oY && lv3Crouching) {
 				playerLives = 12;
 				barrelState = 5;   // consumed — vanish
 			}
@@ -7484,27 +7216,27 @@ void updateLv3Barrel2() {
 			energy2FrameIndex = (energy2FrameIndex + 1) % ENERGY_FRAMECOUNT;
 		}
 
-		// ── Crouch hitbox overlaps energy → restore full lives ──
-		if (lv3Crouching && playerAlive) {
+		// ── Player overlaps energy → restore full lives ──
+		if (playerAlive) {
 			float e2WX = (float)(bridges3[8].maxX + ENERGY2_X_OFF);
 			float e2WY = (float)(bridges3[8].snapY + ENERGY2_Y_OFF);
 
+			// Energy hitbox (world coords)
 			int eX1 = (int)e2WX + (int)(ENERGY2_W * ENERGY2_HB_LEFT);
 			int eX2 = (int)e2WX + (int)(ENERGY2_W * ENERGY2_HB_RIGHT);
-			int eY1 = (int)e2WY;
-			int eY2 = (int)e2WY + ENERGY2_H;
+			int eY1 = (int)e2WY + (int)(ENERGY2_H * 0.1f);
+			int eY2 = (int)e2WY + (int)(ENERGY2_H * 0.9f);
 
-			int sprX = lv3CharX - (CROUCH_W - PLAYER_WIDTH) / 2;
-			int sprY = lv3CharY + CROUCH_Y_OFF;
-			int pX1 = sprX;
-			int pX2 = sprX + CROUCH_W;
-			int pY1 = sprY;
-			int pY2 = sprY + CROUCH_H;
+			// Player hitbox (using standard level 3 hitbox)
+			int pX1 = lv3PHB.x1;
+			int pX2 = lv3PHB.x2;
+			int pY1 = lv3PHB.y1;
+			int pY2 = lv3PHB.y2;
 
 			bool oX = !(pX2 < eX1 || pX1 > eX2);
 			bool oY = !(pY2 < eY1 || pY1 > eY2);
 
-			if (oX && oY) {
+			if (oX && oY && lv3Crouching) {
 				playerLives = 12;
 				barrel2State = 5;
 			}
@@ -8394,6 +8126,7 @@ void resetLevel2State() {
 	killedByLv2wk = killedByLv2wk2 = killedByLv2wk3 = false;
 
 	initCollectiblesLv2();
+	tokenCountLv2 = 0;
 	initFires();
 }
 
