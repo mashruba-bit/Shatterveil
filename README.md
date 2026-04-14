@@ -69,7 +69,7 @@ Open the project in Visual Studio 2013
 
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn2_hover.png" width="200" height="200">
 
-<img src="https://https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn3.png" width="200" height="200">
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn3.png" width="200" height="200">
 
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn3_hover.png" width="200" height="200">
 
@@ -79,7 +79,7 @@ Open the project in Visual Studio 2013
 
 ### **Character**
 Player
-<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/sidem.png" width="200" height="200">
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/sidem.png" width="200" height="350">
 
 ## Youtube Link
 [CSE 1200 Project: The Fallen Kingdom](https://www.youtube.com/)
