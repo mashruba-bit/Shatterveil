@@ -58,8 +58,6 @@ Open the project in Visual Studio 2013
 2. Samiha Akter
 3. Sheikh Namida Mannan
 
-## Screenshots
-
 ### **Buttons**
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn1.png" width="200" height="200">
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn1_hover.png" width="200" height="200">
@@ -77,8 +75,10 @@ Open the project in Visual Studio 2013
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/lvl3en1idle/lvl3en1idle23left.png" width="250" height="220">
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/boss_lv3_walk/walk1.png" width="300" height="500">
 
+## Gameplay Screenshots
+
 ## Youtube Link
 [CSE 1200 Project: The Fallen Kingdom](https://www.youtube.com/)
 
 ## Project Report
-[Project Report: The Fallen Kingdom](https://drive.google.com/drive/u/1/my-drive)
+[Project Report: The Fallen Kingdom](https://drive.google.com/file/d/1Z8w8fvSkcdYcge4z_kUHLhdBWgl3-uOM/view?usp=drive_link)
