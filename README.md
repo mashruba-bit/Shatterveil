@@ -2,7 +2,7 @@
 
 ## Game Description
 
-**Shatterveil - Last Stand of the Sorcerer** is a simple graphics project created using the **iGraphics** library in C. The project demonstrates basic graphics programming concepts like drawing shapes, handling user input, and simple animations.
+**Shatterveil - Last Stand of the Sorcerer** is a simple graphics project created using the **iGraphics** library in C and C++. The project demonstrates basic graphics programming concepts like drawing shapes, handling user input, and simple animations.
 
 ## Features
 - Two playable characters with different attack styles.
@@ -13,8 +13,11 @@
 
 ## Project Details
 IDE: Visual studio 2010/2013
+
 Language: C,C++.
+
 Platform : Windows PC.
+
 Genre : 2D action adventure
 
 ## How to Run the Project
