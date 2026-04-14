@@ -71,11 +71,11 @@ Open the project in Visual Studio 2013
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn4_hover.png" width="200" height="200">
 
 ### **Characters**
-<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/sidem.png" width="200" height="300">
-<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/enemy3_punchm.png" width="300" height="350">
-<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/lvl2wkenemy2/1.png" width="300" height="300">
-<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/lvl3en1idle/lvl3en1idle23left.png" width="300" height="330">
-<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/boss_lv3_walk/walk1.png" width="300" height="350">
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/sidem.png" width="100" height="200">
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/enemy3_punchm.png" width="100" height="150">
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/lvl2wkenemy2/1.png" width="400" height="400">
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/lvl3en1idle/lvl3en1idle23left.png" width="250" height="220">
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/boss_lv3_walk/walk1.png" width="300" height="400">
 
 ## Youtube Link
 [CSE 1200 Project: The Fallen Kingdom](https://www.youtube.com/)
