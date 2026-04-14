@@ -61,10 +61,25 @@ Open the project in Visual Studio 2013
 ## Screenshots
 
 ### **Buttons**
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn1.png" width="200" height="200">
+
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn1_hover.png" width="200" height="200">
 
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn2.png" width="200" height="200">
+
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn2_hover.png" width="200" height="200">
+
+<img src="https://https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn3.png" width="200" height="200">
+
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn3_hover.png" width="200" height="200">
+
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn4.png" width="200" height="200">
+
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/btn4_hover.png" width="200" height="200">
+
 ### **Character**
-<img src="https://github.com/user-attachments/assets/5c8a5fbb-6ebf-48cd-bff0-8235e79d9773" width="200" height="200">
+Player
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/sidem.png" width="200" height="200">
 
 ## Youtube Link
 [CSE 1200 Project: The Fallen Kingdom](https://www.youtube.com/)
