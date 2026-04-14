@@ -72,9 +72,10 @@ Open the project in Visual Studio 2013
 
 ### **Characters**
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/sidem.png" width="200" height="300">
-<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/dragon/dr9.png" width="200" height="200">
-<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/lvl2enemy1/en1.8.png" width="200" height="200">
-<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/boss_lv3_walk/walk1.png" width="200" height="250">
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/enemy3_punchm.png" width="300" height="350">
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/lvl2wkenemy2/1.png" width="300" height="300">
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/lvl3en1idle/lvl3en1idle23left.png" width="300" height="330">
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/boss_lv3_walk/walk1.png" width="300" height="350">
 
 ## Youtube Link
 [CSE 1200 Project: The Fallen Kingdom](https://www.youtube.com/)
