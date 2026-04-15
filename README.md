@@ -1,15 +1,23 @@
-# Shatterveil - Last Stand of the Sorcerer
+# Shatterveil : Last Stand of the Sorcerer
 
 ## Game Description
 
-**Shatterveil - Last Stand of the Sorcerer** is a simple graphics project created using the **iGraphics** library in C and C++. The project demonstrates basic graphics programming concepts like drawing shapes, handling user input, and simple animations.
+**Shatterveil: Last stand of the Sorcerer** is a fast paced 2D action fighting game developed using the **iGraphics** library in C and C++. 
+The game follows the journey of a sorcerer fighting through a shattered mystical world filled with dangerous dragons, broken bridges and cursed landscapes.
+The player must travel across multiple environments, overcome obstacles, battle enemies and survive deadly encounters to restore balance to the fallen realm.
+The project demonstrates core graphic programming concepts such as sprite animation, collision detection, background scrolling, bridge mechanics, enemies, 
+HUD system and game state transitions.
 
 ## Features
-- Two playable characters with different attack styles.
-- Basic animations for punching, kicking, and blocking.
-- Health bars for both players.
+- Sorcerer character movement with left/right walking, jumping and smooth environment scrolling. 
+- Basic animations for punching, crouching, and blocking.
+- Bridge traversal system allowing the player to cross multiple connected bridges.
+- Dragon, boss encounters with attack and death mechanics.
+- Collision detection system for bridges, obstacles and enemy zones.
+- HUD showing health, charged punches, coins.
+- Interactive world elements including blocked paths and unlockable progression.
 - Keyboard controls for attacking and movement.
-- Simple AI for single-player mode (or two-player mode available).
+- Fantasy themed sprite animations and visual story-telling.
 
 ## Project Details
 IDE: Visual studio 2010/2013
@@ -45,12 +53,16 @@ Open the project in Visual Studio 2013
 
 ### **Game Rules**
 
-- Each player starts with 100 health points.
-- Attacks reduce the opponent’s health based on the attack type:
-- Punch: -10 HP
-- Kick: -15 HP
-- Blocking can reduce damage by 50%.
-- The first player to reduce the opponent’s health to 0 wins the round.
+- The player starts the game with 8 lives.
+- Colliding with enemy/obstacle reduces the player's life by 1.
+- During the boss fight, if player gets hit, they lose 2-3 lives depending on boss's attack strength.
+- To avoid obstacles and enemy attacks, player must -
+  - Jump to pass over ground obstacles and enemies.
+  - Crouch to dodge flying enemies.
+- Collecting special power token boosts charged power by 1.
+- Activating "Infinity Shield" protects the player from enemy hits for a limited duration.
+- If all 8 lives are lost, or if player falls on specific obstacle, the game is over.
+- The player wins by defeating the final boss and surviving all obstacles across the bridges and stages.
 
 ## Project Contributors
 
