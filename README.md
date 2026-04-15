@@ -73,12 +73,12 @@ Open the project in Visual Studio 2013
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/enemy3_punchm.png" width="200" height="250">
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/lvl2wkenemy2/1.png" width="370" height="370">
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/lvl3en1idle/lvl3en1idle23left.png" width="250" height="220">
-<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/boss_lv3_walk/walk1.png" width="300" height="500">
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/boss_lv3_fire/firee64.png" width="300" height="500">
 
 ## Gameplay Screenshots
 
 ## Youtube Link
-[CSE 1200 Project: The Fallen Kingdom](https://www.youtube.com/)
+[CSE 1200 Project: Shatterveil - Last Stand of the Sorcerer](https://www.youtube.com/)
 
 ## Project Report
-[Project Report: The Fallen Kingdom](https://drive.google.com/file/d/1Z8w8fvSkcdYcge4z_kUHLhdBWgl3-uOM/view?usp=drive_link)
+[Project Report: Shatterveil - Last Stand of the Sorcerer](https://drive.google.com/file/d/1Z8w8fvSkcdYcge4z_kUHLhdBWgl3-uOM/view?usp=drive_link)
