@@ -75,7 +75,15 @@ Open the project in Visual Studio 2013
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/lvl3en1idle/lvl3en1idle23left.png" width="250" height="220">
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/boss_lv3_fire/firee64.png" width="400" height="650">
 
-## Gameplay Screenshots
+## Game Backgrounds
+## Level 1
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/bg4.1.png" width="500" height="200">
+
+## Level 2
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/bag5.1/bg5.1.jpg" width="500" height="200">
+
+## Level 3
+<img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/lv3.jpg" width="500" height="200">
 
 ## Youtube Link
 [CSE 1200 Project: Shatterveil - Last Stand of the Sorcerer](https://www.youtube.com/)
