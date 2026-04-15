@@ -86,7 +86,7 @@ Open the project in Visual Studio 2013
 <img src="https://github.com/mashruba-bit/Shatterveil/blob/main/lv3%20-%20Copy/Images/lv3.jpg" width="500" height="200">
 
 ## Youtube Link
-[CSE 1200 Project: Shatterveil - Last Stand of the Sorcerer](https://www.youtube.com/)
+[CSE 1200 Project: Shatterveil - Last Stand of the Sorcerer](https://youtu.be/ai_6zFbM7Jg?si=aUnuR3KRJ-vbF_0k)
 
 ## Project Report
 [Project Report: Shatterveil - Last Stand of the Sorcerer](https://drive.google.com/file/d/1Z8w8fvSkcdYcge4z_kUHLhdBWgl3-uOM/view?usp=drive_link)
